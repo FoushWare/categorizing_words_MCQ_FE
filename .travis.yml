@@ -1,0 +1,30 @@
+sudo: false
+language: node_js
+cache:
+  directories:
+    - ~/.npm
+notifications:
+  email: false
+node_js: '12'
+before_install:
+  - npm install -g codecov
+install: echo "install happens as part of setup"
+script: npm run setup
+after_script:
+  - npx codecov@3
+  # - istanbul cover ./node_modules/jest/bin/jest --reporter lcovonly -- -R spec
+  # - codecov
+env:
+  - CODECOV_TOKEN='b3dd45f8-7d85-4b22-94b9-b535867be98a'
+
+# branches:
+# feature/jest
+# only: master
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local_dir: dist
+  target_branch: gh-pages
+  on:
+    branch: master
